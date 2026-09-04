@@ -1,0 +1,156 @@
+{
+  "daylight": {
+    "classical": {
+      "plate_accuracy": 0.55,
+      "stored": 23,
+      "stored_accuracy": 0.9130434782608695,
+      "ms_per_read": 161.56988938649494
+    },
+    "crnn": {
+      "plate_accuracy": 0.9166666666666666,
+      "stored": 56,
+      "stored_accuracy": 0.9642857142857143,
+      "ms_per_read": 20.12672821680705
+    }
+  },
+  "night_ir": {
+    "classical": {
+      "plate_accuracy": 0.48333333333333334,
+      "stored": 18,
+      "stored_accuracy": 0.9444444444444444,
+      "ms_per_read": 146.68997923533124
+    },
+    "crnn": {
+      "plate_accuracy": 0.9166666666666666,
+      "stored": 53,
+      "stored_accuracy": 0.9811320754716981,
+      "ms_per_read": 20.265217622121177
+    }
+  },
+  "night_glare": {
+    "classical": {
+      "plate_accuracy": 0.15,
+      "stored": 10,
+      "stored_accuracy": 0.7,
+      "ms_per_read": 114.0420953432719
+    },
+    "crnn": {
+      "plate_accuracy": 0.38333333333333336,
+      "stored": 21,
+      "stored_accuracy": 0.9523809523809523,
+      "ms_per_read": 22.53381808598836
+    }
+  },
+  "monsoon": {
+    "classical": {
+      "plate_accuracy": 0.25,
+      "stored": 8,
+      "stored_accuracy": 0.75,
+      "ms_per_read": 145.33708492914835
+    },
+    "crnn": {
+      "plate_accuracy": 0.6833333333333333,
+      "stored": 42,
+      "stored_accuracy": 0.8571428571428571,
+      "ms_per_read": 21.17072343826294
+    }
+  },
+  "fog": {
+    "classical": {
+      "plate_accuracy": 0.11666666666666667,
+      "stored": 1,
+      "stored_accuracy": 0.0,
+      "ms_per_read": 125.81338087717691
+    },
+    "crnn": {
+      "plate_accuracy": 0.35,
+      "stored": 22,
+      "stored_accuracy": 0.8636363636363636,
+      "ms_per_read": 20.036983489990234
+    }
+  },
+  "high_speed": {
+    "classical": {
+      "plate_accuracy": 0.03333333333333333,
+      "stored": 2,
+      "stored_accuracy": 0.5,
+      "ms_per_read": 65.23348490397134
+    },
+    "crnn": {
+      "plate_accuracy": 0.36666666666666664,
+      "stored": 18,
+      "stored_accuracy": 0.8333333333333334,
+      "ms_per_read": 22.204089164733887
+    }
+  },
+  "far_lane": {
+    "classical": {
+      "plate_accuracy": 0.016666666666666666,
+      "stored": 1,
+      "stored_accuracy": 0.0,
+      "ms_per_read": 115.55158694585164
+    },
+    "crnn": {
+      "plate_accuracy": 0.2,
+      "stored": 8,
+      "stored_accuracy": 0.75,
+      "ms_per_read": 21.439921855926514
+    }
+  },
+  "dusk_highiso": {
+    "classical": {
+      "plate_accuracy": 0.05,
+      "stored": 2,
+      "stored_accuracy": 1.0,
+      "ms_per_read": 83.9792768160502
+    },
+    "crnn": {
+      "plate_accuracy": 0.38333333333333336,
+      "stored": 21,
+      "stored_accuracy": 0.9523809523809523,
+      "ms_per_read": 20.105373859405518
+    }
+  },
+  "cheap_cam": {
+    "classical": {
+      "plate_accuracy": 0.0,
+      "stored": 2,
+      "stored_accuracy": 0.0,
+      "ms_per_read": 81.94553852081299
+    },
+    "crnn": {
+      "plate_accuracy": 0.15,
+      "stored": 2,
+      "stored_accuracy": 0.5,
+      "ms_per_read": 22.13796377182007
+    }
+  },
+  "storm": {
+    "classical": {
+      "plate_accuracy": 0.0,
+      "stored": 1,
+      "stored_accuracy": 0.0,
+      "ms_per_read": 132.73415168126422
+    },
+    "crnn": {
+      "plate_accuracy": 0.0,
+      "stored": 0,
+      "stored_accuracy": 0.0,
+      "ms_per_read": 22.028764088948567
+    }
+  },
+  "OVERALL": {
+    "classical": {
+      "plate_accuracy": 0.165,
+      "stored": 68,
+      "stored_accuracy": 0.7941176470588235,
+      "ms_per_read": 117.28964686393738
+    },
+    "crnn": {
+      "plate_accuracy": 0.43499999999999994,
+      "stored": 243,
+      "stored_accuracy": 0.9176954732510288,
+      "ms_per_read": 21.20495835940043
+    }
+  }
+}

@@ -1,0 +1,42 @@
+# GodsEye - city-wide ANPR platform
+# SIH 2026 | Team Prometheus
+
+# The CRNN reader. Optional: without torch the platform falls back to the
+# classical segment-and-classify engine, which is slower and far less accurate
+# on realistic captures but needs no extra dependency.
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+torch>=2.0 ; extra == "neural"
+
+# vision + OCR
+opencv-python-headless>=4.10
+numpy>=1.26
+pillow>=10.3
+scikit-learn>=1.5
+joblib>=1.4
+ultralytics>=8.0
+
+# EasyOCR: evaluation-only alternative recogniser (anpr/easyocr_reader.py,
+# anpr/compare_backends.py --real). Not required by the default engine path -
+# guarded by try/except at every import site, same as torch above.
+easyocr>=1.7 ; extra == "neural"
+
+# Awiros/anpr-ocr: evaluation-only recogniser pretrained specifically on
+# real Indian plates (anpr/anpr_ocr_reader.py). Also not a default-path
+# dependency. paddlepaddle has no Metal/GPU backend on macOS - CPU only there.
+paddlepaddle>=2.6 ; extra == "neural"
+huggingface_hub>=0.20 ; extra == "neural"
+
+# platform
+fastapi>=0.115
+uvicorn[standard]>=0.30
+pydantic>=2.8
+python-multipart>=0.0.9
+networkx>=3.3
+pandas>=2.2
+
+# dashboard
+streamlit>=1.50
+pydeck>=0.9
+altair>=5.3
+requests>=2.32
+matplotlib>=3.8          # font fallback for the plate renderer

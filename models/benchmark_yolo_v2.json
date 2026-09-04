@@ -1,0 +1,130 @@
+{
+  "conditions": [
+    {
+      "condition": "daylight",
+      "samples": 100,
+      "plate_accuracy": 0.9,
+      "char_accuracy": 0.9770000000000002,
+      "accepted": 99,
+      "accepted_accuracy": 1.0,
+      "mean_confidence": 0.9951021601433555,
+      "burst_accuracy": 0.99
+    },
+    {
+      "condition": "night_ir",
+      "samples": 100,
+      "plate_accuracy": 0.91,
+      "char_accuracy": 0.9885454545454544,
+      "accepted": 98,
+      "accepted_accuracy": 1.0,
+      "mean_confidence": 0.9963446526251064,
+      "burst_accuracy": 0.98
+    },
+    {
+      "condition": "night_glare",
+      "samples": 100,
+      "plate_accuracy": 0.36,
+      "char_accuracy": 0.7273939393939395,
+      "accepted": 77,
+      "accepted_accuracy": 0.974025974025974,
+      "mean_confidence": 0.9637107394392704,
+      "burst_accuracy": 0.79
+    },
+    {
+      "condition": "monsoon",
+      "samples": 100,
+      "plate_accuracy": 0.69,
+      "char_accuracy": 0.9465757575757574,
+      "accepted": 98,
+      "accepted_accuracy": 0.9897959183673469,
+      "mean_confidence": 0.9945692634682769,
+      "burst_accuracy": 0.98
+    },
+    {
+      "condition": "fog",
+      "samples": 100,
+      "plate_accuracy": 0.42,
+      "char_accuracy": 0.7040505050505049,
+      "accepted": 79,
+      "accepted_accuracy": 0.9620253164556962,
+      "mean_confidence": 0.9776130806955234,
+      "burst_accuracy": 0.83
+    },
+    {
+      "condition": "high_speed",
+      "samples": 100,
+      "plate_accuracy": 0.3,
+      "char_accuracy": 0.7453939393939393,
+      "accepted": 81,
+      "accepted_accuracy": 0.9629629629629629,
+      "mean_confidence": 0.9756135470513446,
+      "burst_accuracy": 0.85
+    },
+    {
+      "condition": "far_lane",
+      "samples": 100,
+      "plate_accuracy": 0.3,
+      "char_accuracy": 0.7377171717171713,
+      "accepted": 73,
+      "accepted_accuracy": 0.7671232876712328,
+      "mean_confidence": 0.9660465041557506,
+      "burst_accuracy": 0.66
+    },
+    {
+      "condition": "dusk_highiso",
+      "samples": 100,
+      "plate_accuracy": 0.4,
+      "char_accuracy": 0.7772727272727272,
+      "accepted": 80,
+      "accepted_accuracy": 0.9875,
+      "mean_confidence": 0.9776236182485789,
+      "burst_accuracy": 0.83
+    },
+    {
+      "condition": "cheap_cam",
+      "samples": 100,
+      "plate_accuracy": 0.09,
+      "char_accuracy": 0.5085050505050505,
+      "accepted": 23,
+      "accepted_accuracy": 0.782608695652174,
+      "mean_confidence": 0.8196494387528049,
+      "burst_accuracy": 0.31
+    },
+    {
+      "condition": "storm",
+      "samples": 100,
+      "plate_accuracy": 0.0,
+      "char_accuracy": 0.13714141414141415,
+      "accepted": 0,
+      "accepted_accuracy": 0.0,
+      "mean_confidence": 0.27155470857857134,
+      "burst_accuracy": 0.0
+    }
+  ],
+  "overall": {
+    "condition": "OVERALL",
+    "samples": 1000,
+    "plate_accuracy": 0.43699999999999994,
+    "char_accuracy": 0.7249595959595959,
+    "accepted": 708,
+    "accepted_accuracy": 0.954802259885657,
+    "mean_confidence": 0.8937827713158584,
+    "burst_accuracy": 0.722
+  },
+  "elapsed_s": 51.601840019226074,
+  "samples_per_condition": 100,
+  "burst_frames": 5,
+  "scenes": {
+    "samples": 60,
+    "localised": 0.3,
+    "read_accuracy": 0.08333333333333333,
+    "elapsed_s": 4.555361986160278,
+    "seconds_per_frame": 0.07592269976933798
+  },
+  "layouts": {
+    "one row, clean": 0.53,
+    "one row, dirty": 0.29,
+    "one row, damaged": 0.43,
+    "two rows": 0.39
+  }
+}

@@ -1,0 +1,629 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>GodsEye — Progress Brief</title>
+<style>
+  @page { size: A4; margin: 14mm 15mm 12mm 15mm; }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  :root {
+    --ink: #0d0d0d; --mid: #4a4a4a; --soft: #707070;
+    --hair: #c9c9c9; --wash: #f2f2f2; --wash2: #e6e6e6;
+    --serif: Cambria, Georgia, "Times New Roman", serif;
+    --sans: "Segoe UI", Calibri, system-ui, sans-serif;
+  }
+  body { font-family: var(--sans); font-size: 9.4pt; line-height: 1.5;
+         color: var(--ink); margin: 0; }
+
+  .page { min-height: 266mm; display: flex; flex-direction: column;
+          page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+  .body { flex: 1 1 auto; }
+  .pagefoot { margin-top: auto; padding-top: 3mm; border-top: 0.6pt solid var(--hair);
+              display: flex; justify-content: space-between; align-items: baseline;
+              font-size: 7.4pt; letter-spacing: 0.5pt; color: var(--soft);
+              text-transform: uppercase; }
+  .pagefoot .no { font-family: var(--serif); font-size: 10pt; letter-spacing: 0;
+                  color: var(--ink); font-weight: 700; }
+
+  .shead { display: flex; align-items: flex-start; gap: 4.5mm;
+           border-top: 2.4pt solid var(--ink); padding-top: 2.4mm; margin-bottom: 4mm; }
+  .shead .sn { font-family: var(--serif); font-size: 27pt; line-height: 0.82;
+               color: var(--wash2); font-weight: 700; letter-spacing: -1pt; }
+  .shead .st h2 { font-family: var(--serif); font-size: 16pt; margin: 0 0 0.8mm;
+                  font-weight: 700; letter-spacing: -0.2pt; line-height: 1.08; }
+  .shead .st p { margin: 0; font-size: 8.8pt; color: var(--mid); max-width: 132mm; }
+
+  h3 { font-family: var(--serif); font-size: 11pt; margin: 4.5mm 0 1.5mm;
+       font-weight: 700; letter-spacing: -0.1pt; }
+  h3:first-child { margin-top: 0; }
+  p { margin: 0 0 2.6mm; }
+  .small { font-size: 8.5pt; line-height: 1.45; }
+  .muted { color: var(--mid); }
+  .kicker { font-size: 7.4pt; letter-spacing: 1.6pt; text-transform: uppercase;
+            color: var(--soft); margin-bottom: 1.8mm; font-weight: 600; }
+
+  .rule { border: 0; border-top: 0.6pt solid var(--hair); margin: 4mm 0; }
+  .box { border: 0.8pt solid var(--ink); padding: 3.4mm 3.8mm; }
+  .box.soft { border: 0.6pt solid var(--hair); background: var(--wash); }
+  .box.tint { background: var(--wash); border: 0; border-left: 2.6pt solid var(--ink);
+              padding: 3.2mm 4mm; }
+  .box h3 { margin-top: 0; }
+
+  .c2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+  .c3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4.5mm; }
+  .c21 { display: grid; grid-template-columns: 1.3fr 1fr; gap: 6mm; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 8.7pt; }
+  th { text-align: left; border-bottom: 1.2pt solid var(--ink); padding: 1.5mm 1.6mm;
+       font-weight: 600; font-size: 7.8pt; letter-spacing: 0.5pt;
+       text-transform: uppercase; color: var(--mid); }
+  td { padding: 1.35mm 1.6mm; border-bottom: 0.4pt solid #dcdcdc; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.total td { border-top: 1.2pt solid var(--ink); border-bottom: 0;
+                font-weight: 700; font-size: 9.2pt; }
+  .bar { display: inline-block; height: 7pt; background: var(--ink);
+         vertical-align: middle; }
+  .bar.hatch { background: repeating-linear-gradient(90deg,var(--ink) 0 1.1pt,#fff 1.1pt 2.7pt);
+               outline: 0.5pt solid var(--ink); }
+
+  figure { margin: 0; }
+  figure img { width: 100%; height: auto; display: block; border: 0.6pt solid var(--hair); }
+  figure.cap { text-align: center; }
+  figure.cap img { max-height: 66mm; width: auto; max-width: 100%; margin: 0 auto; }
+  figcaption { font-size: 7.9pt; color: var(--mid); margin-top: 1.5mm; line-height: 1.4; }
+  figcaption b { color: var(--ink); font-weight: 600; }
+
+  .num { display: inline-block; width: 5mm; height: 5mm; border: 0.9pt solid var(--ink);
+         border-radius: 50%; text-align: center; line-height: 4.4mm; font-size: 7.8pt;
+         font-weight: 700; margin-right: 1.6mm; font-family: var(--serif); }
+  ul { margin: 0 0 2.6mm; padding-left: 4.4mm; }
+  li { margin-bottom: 1.3mm; }
+  code { font-family: Consolas, monospace; font-size: 8.3pt; background: var(--wash2);
+         padding: 0.2mm 0.9mm; }
+
+  .cover { display: flex; flex-direction: column; min-height: 266mm; }
+  .cover .top { border-top: 3.6pt solid var(--ink); padding-top: 3mm;
+                display: flex; justify-content: space-between; font-size: 7.6pt;
+                letter-spacing: 1.6pt; text-transform: uppercase; font-weight: 600;
+                color: var(--mid); }
+  .cover .idblock { padding-top: 7mm; }
+  .cover h1 { font-family: var(--serif); font-size: 58pt; line-height: 0.92;
+              margin: 0 0 3.5mm; letter-spacing: -2pt; font-weight: 700; }
+  .cover .ps { font-size: 9.6pt; line-height: 1.4; max-width: 158mm;
+               color: var(--mid); margin: 0 0 4.5mm; padding-bottom: 3.5mm;
+               border-bottom: 0.6pt solid var(--hair); }
+  .cover .ps b { color: var(--ink); font-weight: 600; }
+  .cover .tag { font-size: 12.4pt; line-height: 1.42; max-width: 162mm; margin: 0; }
+  .cover .tag b { font-weight: 600; }
+
+  .cover .hero { margin: 8mm 0 0; }
+  .cover .hero img { width: 100%; height: auto; max-height: 88mm;
+                    object-fit: contain; display: block; border: 0; }
+  .cover .hero figcaption { font-size: 8.2pt; color: var(--mid); line-height: 1.4;
+                            margin-top: 1mm; max-width: 168mm; }
+  .cover .stripfig { margin: 7mm 0 0; }
+  .cover .stripfig img { width: 100%; height: auto; display: block; border: 0; }
+  .cover .stripfig figcaption { font-size: 8.2pt; color: var(--mid); line-height: 1.4;
+                                margin-top: 2mm; max-width: 168mm; }
+  .cover figcaption b { color: var(--ink); font-weight: 600; }
+
+  .cover .stats { margin-top: auto; padding-top: 8mm; }
+  .stat { border-top: 1.6pt solid var(--ink); padding-top: 2.2mm; }
+  .stat .v { font-family: var(--serif); font-size: 25pt; font-weight: 700;
+             line-height: 1; letter-spacing: -0.8pt; }
+  .stat .l { font-size: 7.8pt; color: var(--mid); margin-top: 1.2mm; line-height: 1.35; }
+  .cover .foot { border-top: 0.6pt solid var(--hair); padding-top: 3mm; margin-top: 7mm;
+                 display: flex; justify-content: space-between;
+                 font-size: 8pt; color: var(--soft); }
+</style>
+
+<!-- ══════════════════ COVER ══════════════════ -->
+<section class="cover">
+  <div class="top"><span>Smart India Hackathon 2026</span><span>Progress Brief</span></div>
+
+  <div class="idblock">
+    <div class="kicker">Team Prometheus · Transportation &amp; Logistics · Software</div>
+    <h1>GodsEye</h1>
+    <p class="ps">Problem statement — <b>City-Wide AI Engine for Multi-Camera ANPR
+    Trajectory Tracking and Urban Traffic Analytics</b></p>
+    <p class="tag">Every city already owns the cameras. Nothing joins them together.
+    GodsEye reads the number plates those cameras capture and links the readings across
+    the network, so a single vehicle can be followed <b>across the whole city</b>.</p>
+  </div>
+
+  <figure class="hero">
+    <img src="figs/hero.png" alt="one vehicle's journey traced across the camera network">
+    <figcaption><b>One vehicle, thirteen cameras, 170 km in a day.</b> The pale web is the
+    35-camera network; the heavy line is a single registration's real reconstructed
+    journey, in order, along the roads it must have taken. No camera saw more than a
+    fraction of it.</figcaption>
+  </figure>
+
+  <figure class="stripfig">
+    <img src="figs/strip.png" alt="one plate, six camera conditions">
+    <figcaption><b>And this is the input.</b> The same number plate as six different
+    cameras actually deliver it — midday, night infra-red, monsoon, headlight glare, high
+    speed, fog.</figcaption>
+  </figure>
+
+  <div class="c3 stats">
+    <div class="stat"><div class="v">35</div>
+      <div class="l">camera sites on a real<br>Kolkata road network</div></div>
+    <div class="stat"><div class="v">73%</div>
+      <div class="l">of number plates<br>read correctly</div></div>
+    <div class="stat"><div class="v">96%</div>
+      <div class="l">correct among the readings<br>the system stands behind</div></div>
+  </div>
+
+  <div class="foot">
+    <span>Prepared for mentor review</span>
+    <span>Four components · 58 automated checks · every figure measured, none quoted</span>
+  </div>
+</section>
+
+<!-- ══════════════════ 01 ══════════════════ -->
+<section class="page">
+ <div class="body">
+  <div class="shead">
+    <div class="sn">01</div>
+    <div class="st"><h2>What we have built</h2>
+      <p>Four components, each of which has to work before the next one is worth
+      anything.</p></div>
+  </div>
+
+  <div class="c2" style="margin-bottom:5mm">
+    <div>
+      <p><span class="num">1</span><strong>A plate reader for bad photographs.</strong>
+      Not clean studio images — the 9 p.m. capture through rain, at an angle, on a plate
+      half covered in road grime. This is the hard part, and everything else depends on
+      it.</p>
+      <p><span class="num">2</span><strong>Vehicle tracking across the city.</strong>
+      Type a plate and get the vehicle's whole day: every camera it passed, in order,
+      drawn on a map, with timings and the road it must have taken between each pair.</p>
+    </div>
+    <div>
+      <p><span class="num">3</span><strong>City-wide traffic analytics.</strong>
+      The same readings, aggregated to answer a different question: where the congestion
+      is, which corridor costs the most delay, where traffic enters and leaves.</p>
+      <p><span class="num">4</span><strong>A real-time alert queue.</strong>
+      Watch-listed vehicles, duplicated number plates, loitering and unusual routes,
+      raised automatically as readings arrive rather than found by hand.</p>
+    </div>
+  </div>
+
+  <div class="box tint" style="margin-bottom:5mm">
+    <h3>The design decision everything rests on</h3>
+    <p style="margin-bottom:0">The system does not have to answer every time. When it is
+    not confident, it <strong>discards the reading rather than guessing</strong>. So two
+    numbers matter, and they are different: it reads <strong>73%</strong> of plates
+    correctly overall, and of the readings it is confident enough to keep,
+    <strong>96%</strong> are exactly right. A wrong registration put in front of a police
+    officer is far worse than none at all — it accuses the wrong person. The brief asks
+    for above 90%, and section 06 sets out precisely where the shortfall is and what we
+    have already eliminated as its cause.</p>
+  </div>
+
+  <hr class="rule">
+
+  <div class="c21">
+    <div>
+      <h3>How it is being tested</h3>
+      <p class="small">We have no access to live city cameras, so we built a simulator:
+      260 vehicles driving realistic routes across the 35-camera map, with rush-hour
+      demand and standing congestion on the corridors that are genuinely congested in
+      Kolkata.</p>
+      <p class="small">Every vehicle that passes a camera has a plate image generated and
+      pushed through the <em>real</em> reader — errors included. What lands in the
+      database is what the software actually read, not the right answer. The tracking and
+      analytics layers therefore have to cope with imperfect readings exactly as they
+      would in the field.</p>
+      <p class="small" style="margin-bottom:0">Swapping the simulator for real cameras
+      means writing rows into a single database table. Nothing above that table knows, or
+      needs to know, where they came from.</p>
+    </div>
+    <div class="box soft">
+      <div class="kicker" style="margin-bottom:2.4mm">One six-hour test day</div>
+      <table>
+        <tr><td>Camera crossings</td><td class="n">6,586</td></tr>
+        <tr><td>Readings stored</td><td class="n">5,579</td></tr>
+        <tr><td>Readings refused</td><td class="n">1,007</td></tr>
+        <tr><td>Distinct vehicles</td><td class="n">336</td></tr>
+        <tr><td>Alerts raised</td><td class="n">186</td></tr>
+        <tr><td>Automated self-checks</td><td class="n">58 pass</td></tr>
+      </table>
+      <p class="small muted" style="margin:2.4mm 0 0;font-size:7.6pt">One run of
+      <code>python seed.py --hours 6</code>. Counts shift a little between runs: the
+      simulator anchors its window to the clock, and a six-hour window ending at 3 a.m.
+      carries far less traffic than one ending at 6 p.m.</p>
+    </div>
+  </div>
+ </div>
+ <div class="pagefoot"><span>GodsEye · Team Prometheus</span><span class="no">2</span></div>
+</section>
+
+<!-- ══════════════════ 02 ══════════════════ -->
+<section class="page">
+ <div class="body">
+  <div class="shead">
+    <div class="sn">02</div>
+    <div class="st"><h2>How one plate gets read</h2>
+      <p>A camera does not take one photograph of a car — and reading only one is the
+      single biggest thing most systems get wrong.</p></div>
+  </div>
+
+  <p>A traffic camera is triggered as a vehicle enters its zone and takes a
+  <strong>burst</strong> of frames: different distances, exposures and amounts of blur,
+  all of the same plate. Reading only the middle one throws away every other look. The
+  principle is a familiar one — <em>a single noisy measurement is unreliable; several
+  independent measurements of the same thing are not.</em></p>
+
+  <svg viewBox="0 0 812 250" style="width:100%;height:auto;margin:3.5mm 0 1mm">
+    <defs>
+      <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3"
+              orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#0d0d0d"/></marker>
+      <marker id="arw" markerWidth="9" markerHeight="9" refX="7" refY="3"
+              orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#8a8a8a"/></marker>
+    </defs>
+    <g font-family="Segoe UI, sans-serif" font-size="11" fill="#0d0d0d">
+      <rect x="2" y="78" width="96" height="52" fill="none" stroke="#0d0d0d" stroke-width="1.6"/>
+      <text x="50" y="99" text-anchor="middle" font-weight="700">Camera</text>
+      <text x="50" y="114" text-anchor="middle" font-size="9.5" fill="#4a4a4a">on a 6–8 m pole</text>
+      <line x1="98" y1="104" x2="130" y2="104" stroke="#0d0d0d" stroke-width="1.4" marker-end="url(#ar)"/>
+
+      <rect x="134" y="52" width="86" height="21" fill="#e8e8e8" stroke="#0d0d0d" stroke-width="0.9"/>
+      <rect x="134" y="78" width="86" height="21" fill="#f4f4f4" stroke="#0d0d0d" stroke-width="0.9"/>
+      <rect x="134" y="104" width="86" height="21" fill="#dcdcdc" stroke="#0d0d0d" stroke-width="0.9"/>
+      <rect x="134" y="130" width="86" height="21" fill="#efefef" stroke="#0d0d0d" stroke-width="0.9"/>
+      <rect x="134" y="156" width="86" height="21" fill="#e4e4e4" stroke="#0d0d0d" stroke-width="0.9"/>
+      <text x="177" y="67" text-anchor="middle" font-size="9">frame 1</text>
+      <text x="177" y="93" text-anchor="middle" font-size="9">frame 2</text>
+      <text x="177" y="119" text-anchor="middle" font-size="9">frame 3</text>
+      <text x="177" y="145" text-anchor="middle" font-size="9">frame 4</text>
+      <text x="177" y="171" text-anchor="middle" font-size="9">frame 5</text>
+      <text x="177" y="42" text-anchor="middle" font-size="9.5" fill="#4a4a4a">a burst, not a photograph</text>
+      <line x1="220" y1="114" x2="252" y2="114" stroke="#0d0d0d" stroke-width="1.4" marker-end="url(#ar)"/>
+
+      <rect x="256" y="78" width="118" height="72" fill="none" stroke="#0d0d0d" stroke-width="1.6"/>
+      <text x="315" y="99" text-anchor="middle" font-weight="700">Neural reader</text>
+      <text x="315" y="114" text-anchor="middle" font-size="9.5" fill="#4a4a4a">reads each frame</text>
+      <text x="315" y="128" text-anchor="middle" font-size="9.5" fill="#4a4a4a">independently, and</text>
+      <text x="315" y="142" text-anchor="middle" font-size="9.5" fill="#4a4a4a">scores its own certainty</text>
+      <line x1="374" y1="114" x2="406" y2="114" stroke="#0d0d0d" stroke-width="1.4" marker-end="url(#ar)"/>
+
+      <rect x="410" y="84" width="104" height="60" fill="#ededed" stroke="#0d0d0d" stroke-width="1.6"/>
+      <text x="462" y="105" text-anchor="middle" font-weight="700">Vote</text>
+      <text x="462" y="120" text-anchor="middle" font-size="9.5" fill="#4a4a4a">frames that agree</text>
+      <text x="462" y="134" text-anchor="middle" font-size="9.5" fill="#4a4a4a">outvote the rest</text>
+      <line x1="514" y1="114" x2="546" y2="114" stroke="#0d0d0d" stroke-width="1.4" marker-end="url(#ar)"/>
+
+      <path d="M604,72 L664,114 L604,156 L544,114 z" fill="none" stroke="#0d0d0d" stroke-width="1.6"/>
+      <text x="604" y="110" text-anchor="middle" font-size="9.5" font-weight="700">Confident</text>
+      <text x="604" y="123" text-anchor="middle" font-size="9.5" font-weight="700">enough?</text>
+
+      <line x1="664" y1="103" x2="696" y2="72" stroke="#0d0d0d" stroke-width="1.4" marker-end="url(#ar)"/>
+      <text x="700" y="52" font-size="9.5" font-weight="700">YES</text>
+      <text x="700" y="66" font-size="9.5" fill="#4a4a4a">store it</text>
+      <line x1="664" y1="125" x2="696" y2="160" stroke="#8a8a8a" stroke-width="1.4"
+            stroke-dasharray="3 2.5" marker-end="url(#arw)"/>
+      <text x="700" y="176" font-size="9.5" font-weight="700" fill="#4a4a4a">NO</text>
+      <text x="700" y="190" font-size="9.5" fill="#4a4a4a">refuse it, but</text>
+      <text x="700" y="203" font-size="9.5" fill="#4a4a4a">keep the image</text>
+      <text x="700" y="216" font-size="9.5" fill="#4a4a4a">(see section 05)</text>
+    </g>
+  </svg>
+  <p class="small muted" style="text-align:center;margin:0 0 4mm">
+    <b>Figure 1</b> — the reading pipeline. Every stage is measured; none is assumed.</p>
+
+  <div class="c2" style="margin-bottom:4mm">
+    <div class="box">
+      <h3>Why the burst matters</h3>
+      <p class="small" style="margin-bottom:0">Reading a single frame, the software gets
+      <strong>42%</strong> of plates right. Reading five frames of the same vehicle and
+      taking the weighted consensus, it gets <strong>73%</strong>. Nothing about the
+      reader changed — the frames fail in <em>different</em> ways, so a frame that loses
+      the plate to glare is outvoted by the four that did not.</p>
+    </div>
+    <div class="box soft">
+      <h3>Why refusing is a feature</h3>
+      <p class="small" style="margin-bottom:0">The system applies a confidence threshold
+      and discards anything below it — exactly like reporting "below detection limit"
+      rather than a number you do not trust. It is why 96% of what reaches the database is
+      correct, and why a refusal is a result rather than a failure.</p>
+    </div>
+  </div>
+
+  <figure>
+    <img src="figs/burst_read.png" alt="burst read">
+    <figcaption><b>Figure 2</b> — the reader in burst mode. Five separate captures of one
+    plate, with what each read on its own; the system combines them into a single answer.
+    Here all five agreed.</figcaption>
+  </figure>
+ </div>
+ <div class="pagefoot"><span>GodsEye · Team Prometheus</span><span class="no">3</span></div>
+</section>
+
+<!-- ══════════════════ 03 ══════════════════ -->
+<section class="page">
+ <div class="body">
+  <div class="shead">
+    <div class="sn">03</div>
+    <div class="st"><h2>The camera network</h2>
+      <p>The cameras are not a list. They are a network with real roads between them, and
+      that single fact powers everything above the reader.</p></div>
+  </div>
+
+  <figure class="cap" style="margin-bottom:4mm">
+    <img src="figs/network.png" alt="camera network graph" style="border:0;max-height:112mm;width:auto;max-width:100%;margin:0 auto">
+    <figcaption><b>Figure 3</b> — the network as the software sees it. Each dot is a
+    camera at a real Kolkata junction, sized by the traffic passing it; each line is a
+    road link with a known length and speed limit. Ringed dots are city gateways where
+    traffic enters and leaves.</figcaption>
+  </figure>
+
+  <div class="c21">
+    <div>
+      <h3>What the network buys us</h3>
+      <p class="small">Because the software knows the roads, it knows how long a journey
+      between any two cameras <em>should</em> take. That one fact powers four separate
+      capabilities:</p>
+      <ul class="small" style="margin-bottom:0">
+        <li>drawing a vehicle's route along the road it must actually have taken, rather
+        than a straight line between two dots;</li>
+        <li>spotting a journey that is physically impossible — which is how duplicated
+        plates are found (section 05);</li>
+        <li>measuring how much delay each corridor is genuinely causing;</li>
+        <li>recovering a plate a camera failed to read, by asking which vehicles the
+        neighbouring cameras saw at the right moment (section 05).</li>
+      </ul>
+    </div>
+    <div class="box soft">
+      <h3>Real, and simulated</h3>
+      <p class="small"><strong>Real:</strong> the reader and the neural network behind it,
+      the plate images including every degradation, journey reconstruction, search,
+      analytics, all six alert rules, and the camera coordinates — 35 genuine Kolkata
+      junctions.</p>
+      <p class="small"><strong>Simulated:</strong> the camera feeds, the vehicle movement,
+      and the road lengths and speed limits, which we hand-estimated from maps. In a
+      deployment these would come from the city's own road database.</p>
+      <p class="small" style="margin-bottom:0"><strong>The honest limit:</strong> our
+      plates are generated by our software and photographed through our own model of a
+      camera. Every accuracy figure in this brief measures the reader against that model.
+      It is not a field trial, and we do not present it as one.</p>
+    </div>
+  </div>
+ </div>
+ <div class="pagefoot"><span>GodsEye · Team Prometheus</span><span class="no">4</span></div>
+</section>
+
+<!-- ══════════════════ 04 ══════════════════ -->
+<section class="page">
+ <div class="body">
+  <div class="shead">
+    <div class="sn">04</div>
+    <div class="st"><h2>What an operator does with it</h2>
+      <p>Following one vehicle, seeing the whole city, and being told rather than having
+      to look.</p></div>
+  </div>
+
+  <h3>Follow one vehicle</h3>
+  <p>Type a plate number — even a partial or slightly wrong one — and the system rebuilds
+  the vehicle's day. It is deliberately tolerant of its own mistakes: if an operator types
+  <code>KA05MJ1234</code> and a rain-blurred camera stored <code>KA05NJ1234</code>, the
+  search still finds it, because it knows which character confusions the reader actually
+  makes.</p>
+
+  <figure class="cap" style="margin-bottom:4.5mm">
+    <img src="figs/trajectory.png" alt="trajectory">
+    <figcaption><b>Figure 4</b> — one vehicle's reconstructed journey: 18 sightings across
+    13 cameras, 114 km over about eleven hours. The route follows the real roads between
+    cameras, and every leg is listed with its timing and implied speed.</figcaption>
+  </figure>
+
+  <div class="c2">
+    <div>
+      <h3>See the whole city</h3>
+      <p class="small">The same readings, aggregated, answer a different question: not
+      <em>where is this vehicle</em> but <em>how is the city moving</em>. The platform
+      computes traffic density per camera, speed and volume on every road link, a live
+      heatmap, and where journeys begin and end.</p>
+      <p class="small" style="margin-bottom:0">One deliberate choice: congestion is ranked
+      by <strong>vehicle-minutes of delay caused</strong>, not by slowness. A slow empty
+      road is not a problem worth an officer's attention. A slow busy one is.</p>
+    </div>
+    <div>
+      <h3>Be told, not have to look</h3>
+      <p class="small">Six rules run automatically as each reading arrives:</p>
+      <table class="small">
+        <tr><td><strong>Watch-list</strong></td><td>a flagged plate is seen anywhere</td></tr>
+        <tr><td><strong>Duplicate plate</strong></td><td>same plate in two places at once</td></tr>
+        <tr><td><strong>Loitering</strong></td><td>same junction 4+ times in 45 min</td></tr>
+        <tr><td><strong>Detour</strong></td><td>returns to a camera the long way round</td></tr>
+        <tr><td><strong>Speeding</strong></td><td>far above the link's free-flow speed</td></tr>
+        <tr><td><strong>Odd hour</strong></td><td>roaming between 1 a.m. and 5 a.m.</td></tr>
+      </table>
+      <p class="small muted" style="margin-top:2.4mm;margin-bottom:0">Every threshold was
+      set by measurement, not by taste. An early version of the detour rule fired whenever
+      a vehicle covered 1.6 times the direct distance within an hour — which flagged 28%
+      of all vehicles, because that is simply what a commute looks like.</p>
+    </div>
+  </div>
+ </div>
+ <div class="pagefoot"><span>GodsEye · Team Prometheus</span><span class="no">5</span></div>
+</section>
+
+<!-- ══════════════════ 05 ══════════════════ -->
+<section class="page">
+ <div class="body">
+  <div class="shead">
+    <div class="sn">05</div>
+    <div class="st"><h2>Two things we built ourselves</h2>
+      <p>Neither is a library we installed. Both came out of measuring where the system was
+      losing accuracy, and both use the camera network rather than the image alone.</p></div>
+  </div>
+
+  <h3>1 · Recovering the readings a camera failed</h3>
+  <p class="small muted" style="margin-bottom:2mm">Using spatial and temporal context to
+  constrain recognition is an established idea; what is ours is the implementation, and
+  the acceptance rules that stop it inventing answers.</p>
+  <p>When a camera cannot read a plate confidently the reading is thrown away — correct at
+  the time. But minutes later the <em>neighbouring</em> cameras have reported, and whatever
+  drove past the failed camera almost certainly appears in one of those lists. So rather
+  than guessing from the 13.6 trillion registrations the plate grammar admits, the system
+  scores the few hundred plates the neighbours actually saw against the original blurred
+  image and asks which one fits best.</p>
+
+  <svg viewBox="0 0 760 156" style="width:100%;height:auto;margin:0 0 1mm">
+    <g font-family="Segoe UI, sans-serif" font-size="10.5" fill="#0d0d0d">
+      <line x1="60" y1="60" x2="700" y2="60" stroke="#9a9a9a" stroke-width="1.2"/>
+      <circle cx="150" cy="60" r="11" fill="#0d0d0d"/>
+      <text x="150" y="40" text-anchor="middle" font-size="10">Camera A</text>
+      <text x="150" y="88" text-anchor="middle" font-size="9.5" fill="#4a4a4a">read 40 plates</text>
+      <text x="150" y="101" text-anchor="middle" font-size="9.5" fill="#4a4a4a">4 min earlier</text>
+      <circle cx="380" cy="60" r="13" fill="#fff" stroke="#0d0d0d" stroke-width="2"
+              stroke-dasharray="3.5 2.5"/>
+      <text x="380" y="36" text-anchor="middle" font-size="10" font-weight="700">Camera B</text>
+      <text x="380" y="88" text-anchor="middle" font-size="9.5" font-weight="700">could not read it</text>
+      <text x="380" y="101" text-anchor="middle" font-size="9.5" fill="#4a4a4a">image kept, not discarded</text>
+      <circle cx="610" cy="60" r="11" fill="#0d0d0d"/>
+      <text x="610" y="40" text-anchor="middle" font-size="10">Camera C</text>
+      <text x="610" y="88" text-anchor="middle" font-size="9.5" fill="#4a4a4a">read 35 plates</text>
+      <text x="610" y="101" text-anchor="middle" font-size="9.5" fill="#4a4a4a">3 min later</text>
+      <path d="M150,112 L150,126 L380,126 L380,112" fill="none" stroke="#0d0d0d" stroke-width="1"/>
+      <path d="M610,112 L610,126 L380,126" fill="none" stroke="#0d0d0d" stroke-width="1"/>
+      <text x="380" y="146" text-anchor="middle" font-size="10">score those ~75 candidate plates against B's blurred image — the best fit wins,</text>
+      <text x="380" y="160" text-anchor="middle" font-size="10">but only if it clearly beats the runner-up</text>
+    </g>
+  </svg>
+
+  <div class="box soft" style="margin-bottom:4.5mm">
+    <p class="small"><strong>Result on the same six-hour day.</strong> The system refused
+    1,007 readings. Only the 25 it had actually put through the reader keep their evidence
+    — the rest were never decoded, so there is nothing to re-score. Of those 25 it
+    recovered <strong>14</strong>, and all 14 were correct. Eleven were genuine repairs of
+    a wrong reading rather than near-misses: <code>DL3HMV8199</code> became
+    <code>OD39HMV8199</code>, a different state and four different characters.</p>
+    <p class="small" style="margin-bottom:0"><strong>Safeguard.</strong> A recovered plate
+    is stored in a separate table and labelled <em>inferred</em>, never mixed with plates
+    that were actually read. An inference is a hypothesis with evidence attached, not an
+    observation — and a guess must never become the evidence for another guess.</p>
+  </div>
+
+  <h3>2 · Catching duplicated number plates</h3>
+  <p>A cloned plate — the same registration on two vehicles — shows up as a physically
+  impossible journey. The system checks for this <strong>automatically the moment an
+  operator searches</strong>, rather than waiting for somebody to notice.</p>
+
+  <div class="box tint" style="margin-bottom:3mm">
+    <h3>The trap we had to design around</h3>
+    <p style="margin-bottom:0">Our reader is right about 73% of the time, which means it
+    sometimes misreads vehicle X's plate as vehicle Y's — and two different vehicles
+    wrongly sharing one plate number looks <em>exactly</em> like a clone. Flagging every
+    impossible journey would turn our own reading errors into accusations against innocent
+    motorists. So before the system will call something a clone it must rule out three
+    cheaper explanations: that one reading was a misread of a similar plate genuinely
+    nearby; that either reading was low-confidence; or that the two cameras are close
+    enough for a clock error to explain it. Only what survives all three is reported, and a
+    single piece of evidence is labelled <em>suspected</em> rather than confirmed.</p>
+  </div>
+
+  <figure class="cap">
+    <img src="figs/clone_search.png" alt="clone detection" style="max-height:32mm">
+    <figcaption><b>Figure 5</b> — searching for a plate raised this unprompted, before any
+    result was opened: the registration is on at least three vehicles, and the worst pair
+    implies a journey at 1,302 km/h.</figcaption>
+  </figure>
+ </div>
+ <div class="pagefoot"><span>GodsEye · Team Prometheus</span><span class="no">6</span></div>
+</section>
+
+<!-- ══════════════════ 06 ══════════════════ -->
+<section class="page">
+ <div class="body">
+  <div class="shead">
+    <div class="sn">06</div>
+    <div class="st"><h2>Where we stand, and what is next</h2>
+      <p>The brief asks for above 90% plate-reading accuracy. We are at 73%, and we would
+      rather show exactly where the shortfall is than round it up.</p></div>
+  </div>
+
+  <table style="margin-bottom:4mm">
+    <tr><th>Camera condition</th><th class="n">One frame</th><th class="n">Five frames</th><th style="width:36%">&nbsp;</th></tr>
+    <tr><td>Bright daylight</td><td class="n">90%</td><td class="n">100%</td><td><span class="bar" style="width:100%"></span></td></tr>
+    <tr><td>Night, infra-red lamp</td><td class="n">92%</td><td class="n">100%</td><td><span class="bar" style="width:100%"></span></td></tr>
+    <tr><td>Heavy rain</td><td class="n">62%</td><td class="n">98%</td><td><span class="bar" style="width:98%"></span></td></tr>
+    <tr><td>Dusk, poor light</td><td class="n">35%</td><td class="n">89%</td><td><span class="bar" style="width:89%"></span></td></tr>
+    <tr><td>Oncoming headlight glare</td><td class="n">41%</td><td class="n">87%</td><td><span class="bar" style="width:87%"></span></td></tr>
+    <tr><td>Fog</td><td class="n">32%</td><td class="n">83%</td><td><span class="bar" style="width:83%"></span></td></tr>
+    <tr><td>Vehicle moving too fast</td><td class="n">41%</td><td class="n">80%</td><td><span class="bar" style="width:80%"></span></td></tr>
+    <tr><td>Far side of the road</td><td class="n">21%</td><td class="n">67%</td><td><span class="bar" style="width:67%"></span></td></tr>
+    <tr><td>Old low-quality camera</td><td class="n">10%</td><td class="n">27%</td><td><span class="bar hatch" style="width:27%"></span></td></tr>
+    <tr><td>Storm — everything at once</td><td class="n">0%</td><td class="n">0%</td><td><span class="small muted">correctly refused</span></td></tr>
+    <tr class="total"><td>Overall</td><td class="n">42%</td><td class="n">73%</td><td>&nbsp;</td></tr>
+  </table>
+
+  <div class="c2" style="margin-bottom:4.5mm">
+    <div class="box">
+      <h3>Three problems, not one</h3>
+      <ul class="small" style="margin-bottom:0">
+        <li><strong>Storm is not a failure.</strong> We tested whether the plate is
+        recoverable from those pixels by <em>any</em> method. It is not. Refusing is the
+        correct behaviour.</li>
+        <li><strong>Seven conditions are fine</strong> — 80% to 100% once the burst is
+        used.</li>
+        <li><strong>Two are genuinely weak</strong> — the far lane and old cameras. We
+        proved the plate <em>is</em> present in those images; our reader is not finding it.
+        That is a model problem, and a fixable one.</li>
+      </ul>
+    </div>
+    <div class="box soft">
+      <h3>What we have already ruled out</h3>
+      <ul class="small" style="margin-bottom:0">
+        <li><strong>Not too small a model</strong> — a larger one performs the same.</li>
+        <li><strong>Not too little training</strong> — a much longer run came out slightly
+        worse.</li>
+        <li><strong>Not the decoding step</strong> — on 251 failed readings, not one could
+        have been rescued by searching harder.</li>
+        <li><strong>The remaining suspect:</strong> our training images are all heavily
+        degraded, so the reader has learned this camera's flaws rather than the shapes of
+        the letters. It scores 4% on a perfectly clean plate. That is the next
+        experiment.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Next steps</h3>
+  <div class="c2">
+    <div>
+      <p class="small"><span class="num">1</span><strong>Real photographs.</strong> The
+      single most valuable thing we could obtain is a few hundred real Indian
+      traffic-camera images. Simulation cannot substitute for them, and we expect our
+      reader to do noticeably worse at first — we would rather know now.</p>
+      <p class="small" style="margin-bottom:0"><span class="num">2</span><strong>Fix the
+      training mix.</strong> Our reader has never seen a sharp plate during training.
+      Adding easier examples should teach it letter shapes rather than camera artefacts.</p>
+    </div>
+    <div>
+      <p class="small"><span class="num">3</span><strong>A trained plate detector.</strong>
+      Given a whole photograph rather than a tight crop, the step that <em>finds</em> the
+      plate succeeds only 57% of the time. Replacing it is a well-understood
+      improvement.</p>
+      <p class="small" style="margin-bottom:0"><span class="num">4</span><strong>Recognise
+      the vehicle, not just the plate.</strong> A camera sees roughly fifty times more
+      pixels of the car than of its plate, and we discard all of them. Comparing colour and
+      shape across cameras would confirm a recovered plate and settle clone from
+      misread.</p>
+    </div>
+  </div>
+
+  <div class="box tint" style="margin-top:4.5mm">
+    <p style="margin-bottom:0"><strong>Where we would value your guidance.</strong> We have
+    deliberately built a system that refuses to answer when unsure, and we have documented
+    our failures alongside our results — including three explanations for the accuracy gap
+    that we tested and disproved. Our question is how to present that honestly to judges
+    without it reading as weakness, when a less careful project can simply claim a higher
+    number.</p>
+  </div>
+ </div>
+ <div class="pagefoot"><span>Figures from <code>tests.py</code> (58 checks) and <code>anpr.benchmark</code></span><span class="no">7</span></div>
+</section>

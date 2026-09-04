@@ -1,0 +1,41 @@
+GodsEye - city-wide ANPR platform (SIH 2026, Team Prometheus)
+===============================================================
+
+Two ways to look at this.
+
+1. JUST LOOK (no install)
+   Open  share.html  in any browser. It is a single self-contained page with
+   screenshots of the running system and an explanation of how it works.
+
+2. ACTUALLY RUN IT  (Python 3.11+, about 2 minutes)
+
+   pip install -r requirements.txt
+   python seed.py                          # generates a day of city traffic
+   streamlit run dashboard/app.py          # the control room -> localhost:8501
+
+   For the live feed and the incident injectors, in a second terminal:
+   uvicorn api.main:app --port 8000
+
+   The neural plate reader needs PyTorch. It is optional - without it the
+   platform falls back to a classical reader and still runs:
+   pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+   The trained models are included (models/), so nothing has to be trained.
+
+WHAT TO TRY FIRST
+   - Live network tab: the Kolkata camera network, roads coloured by congestion
+   - Track a plate: hit "Pick a busy vehicle", then retype the plate with one
+     character wrong - it still finds the vehicle
+   - ANPR engine: pick a camera scenario (try "monsoon" or "far_lane") and
+     press Capture & read
+
+WHERE TO READ
+   README.md          what it does, how it is built, and the measured accuracy
+   AUGMENTATION.md    the camera model - why the training images are generated
+                      by simulating a real pole-mounted traffic camera
+
+VERIFY IT YOURSELF
+   python tests.py                                  # 46 end-to-end checks
+   python -m anpr.benchmark --samples 100           # measure the accuracy
+   python -m anpr.camera_sheet                      # see what the camera model
+                                                    # produces, side by side

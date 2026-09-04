@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 1
+names: ['number_plate']
+
+roboflow:
+  workspace: ayushman-of8l6
+  project: indian-number-plate-keeo5-qzd3f
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/ayushman-of8l6/indian-number-plate-keeo5-qzd3f/dataset/1
