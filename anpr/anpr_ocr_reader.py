@@ -73,17 +73,17 @@ MODEL_CONFIG = {
 }
 IMAGE_SHAPE = [3, 48, 320]
 
-
+#try to install paddle ocr
 def available() -> bool:
     """Is paddle importable? The platform runs fine without it - this
     backend just isn't offered."""
     try:
-        import paddle  # noqa: F401
+        import paddle  # pyright: ignore[reportMissingImports] # noqa: F401
         return True
     except Exception:
         return False
 
-
+#if not available, install from github
 def _ensure_paddleocr() -> None:
     """Make `ppocr` importable, cloning PaddlePaddle/PaddleOCR (Apache 2.0)
     the same way the model's own test.py bootstraps itself on first run."""
@@ -100,7 +100,7 @@ def _ensure_paddleocr() -> None:
     ])
     sys.path.insert(0, _PADDLEOCR_DIR)
 
-
+#Import huggingface dataset
 def _ensure_weights() -> tuple[str, str]:
     """Download model.safetensors + en_dict.txt from the HF repo, cached
     under models/anpr_ocr/ - untracked, like the platform's other large
@@ -110,7 +110,7 @@ def _ensure_weights() -> tuple[str, str]:
     dict_path = hf_hub_download(_REPO_ID, "en_dict.txt", local_dir=_CACHE_DIR)
     return weights, dict_path
 
-
+#Resize images for required yolo dimenions
 def _resize_for_rec(img_bgr: np.ndarray, target_shape) -> np.ndarray:
     _, h, w = target_shape
     img_h, img_w = img_bgr.shape[:2]
@@ -123,7 +123,7 @@ def _resize_for_rec(img_bgr: np.ndarray, target_shape) -> np.ndarray:
         resized = padded
     return resized
 
-
+#Preprocessing image for model : image to array of pixels
 def _preprocess(img_bgr: np.ndarray, target_shape) -> np.ndarray:
     img = _resize_for_rec(img_bgr, target_shape)
     img = img.astype(np.float32) / 255.0
@@ -131,25 +131,25 @@ def _preprocess(img_bgr: np.ndarray, target_shape) -> np.ndarray:
     return img.transpose((2, 0, 1))
 
 
-# --- grammar-constrained decoding --------------------------------------
-#
-# The shipped model reports 98.42% exact-match on its own held-out set, but
-# ppocr's CTCLabelDecode is a plain argmax over 64 classes with no notion of
-# what a registration looks like. On this repo's real corpus that argmax
-# routinely emits the state sticker as extra characters ("MH02ER9194JH", six
-# frames out of thirteen in one cluster) or drops a trailing digit
-# ("MH01AX113"). Both are recoverable without touching the weights: the
-# network's own posterior already ranks the correct string highly, it just
-# does not win the greedy path.
-#
-# So: fold the 64 classes onto the 36-character plate alphabet, run a CTC
-# prefix beam search, propose every grammatical reading each beam admits, and
-# rank those by the *exact* CTC score of the whole string - the same
-# forward-backward recursion anpr/crnn.py uses, borrowed rather than
-# reimplemented (crnn.ctc_score takes the charset as a parameter for exactly
-# this). An ungrammatical read is still returned when nothing grammatical is
-# on the beam, so an unusual-format plate degrades to today's behaviour
-# instead of vanishing.
+"""--- grammar-constrained decoding --------------------------------------
+
+The shipped model reports 98.42% exact-match on its own held-out set, but
+ppocr's CTCLabelDecode is a plain argmax over 64 classes with no notion of
+what a registration looks like. On this repo's real corpus that argmax
+routinely emits the state sticker as extra characters ("MH02ER9194JH", six
+frames out of thirteen in one cluster) or drops a trailing digit
+("MH01AX113"). Both are recoverable without touching the weights: the
+network's own posterior already ranks the correct string highly, it just
+does not win the greedy path.
+
+So: fold the 64 classes onto the 36-character plate alphabet, run a CTC
+prefix beam search, propose every grammatical reading each beam admits, and
+rank those by the *exact* CTC score of the whole string - the same
+forward-backward recursion anpr/crnn.py uses, borrowed rather than
+reimplemented (crnn.ctc_score takes the charset as a parameter for exactly
+this). An ungrammatical read is still returned when nothing grammatical is
+on the beam, so an unusual-format plate degrades to today's behaviour
+instead of vanishing."""
 
 PLATE_ALPHABET = config.ALPHABET                 # "0123456789A..Z"
 PLATE_IDX = {c: i + 1 for i, c in enumerate(PLATE_ALPHABET)}   # 0 is blank
@@ -160,7 +160,7 @@ BEAM_WIDTH = 16
 BEAM_TOP_K = 6          # classes considered per column
 MAX_PREFIX = 14         # longest plate is 11; the slack is what substrings eat
 
-
+# Probability of upper and lower case letters normalised to uppercase letters
 def _fold_probs(probs: np.ndarray, characters: list[str]) -> np.ndarray:
     """Collapse ppocr's 64 classes onto blank + the 36 plate characters.
 
@@ -185,7 +185,7 @@ def _fold_probs(probs: np.ndarray, characters: list[str]) -> np.ndarray:
     total = out.sum(axis=1, keepdims=True)
     return out / np.maximum(total, 1e-12)
 
-
+#Removing characters with extremely low probability (Greedy Alogrithm)
 def _greedy(folded: np.ndarray) -> str:
     """Collapsed argmax path - what CTCLabelDecode would have returned."""
     path = folded.argmax(axis=1)
@@ -196,7 +196,7 @@ def _greedy(folded: np.ndarray) -> str:
         prev = k
     return "".join(out)
 
-
+#Does not immediately decide, keeps tracks of mulitple possibilities using their probabilities
 def _prefix_beam(folded: np.ndarray, width: int = BEAM_WIDTH,
                  top_k: int = BEAM_TOP_K) -> list[str]:
     """CTC prefix beam search. Returns the surviving strings, best first."""
@@ -231,7 +231,7 @@ def _prefix_beam(folded: np.ndarray, width: int = BEAM_WIDTH,
     ranked = sorted(beams.items(), key=lambda kv: -np.logaddexp(*kv[1]))
     return ["".join(p) for p, _ in ranked if p]
 
-
+#Used by _prefix_beam to decide if valid
 def _grammatical_readings(text: str) -> set[str]:
     """Every legal registration this string could be hiding.
 
@@ -263,7 +263,7 @@ def _grammatical_readings(text: str) -> set[str]:
 
 DUAL_ROW_MAX_ASPECT = 2.6      # wider than this and it is a single-row plate
 
-
+#Cuts multiple rows and lays them side by side to join them into one
 def _split_rows(image: np.ndarray) -> np.ndarray | None:
     """A two-row plate, cut at its gutter and laid out as one row.
 
@@ -305,13 +305,13 @@ def _split_rows(image: np.ndarray) -> np.ndarray | None:
 
     return np.hstack([to_height(top), to_height(bottom)])
 
-
+#Calculating score to give each prediction
 def _score(folded: np.ndarray, text: str) -> tuple[float, list[float]]:
     """Exact CTC log-probability of `text` and its per-character posteriors."""
     return crnn_mod.ctc_score(folded, text, idx=PLATE_IDX, blank=PLATE_BLANK,
                               is_probs=True)
 
-
+#Choosing which prediction to keep based on grammer
 def _prefer(a: PlateRead, b: PlateRead) -> bool:
     """Is read `a` better than read `b`?
 
@@ -328,7 +328,11 @@ def _prefer(a: PlateRead, b: PlateRead) -> bool:
     return a.confidence > b.confidence
 
 
+
+#Actual OCR
 class AnprOcrReader:
+
+
     def __init__(self, model, post_process, paddle_mod):
         self._model = model
         self._post_process = post_process
@@ -338,6 +342,7 @@ class AnprOcrReader:
         # to know which of the 64 columns is which character.
         self._characters = list(getattr(post_process, "character", []))
 
+    #Convert image to greyscale, match pixels then call _fold_probs(to make alphabets case insensitive)
     def probabilities(self, image: np.ndarray) -> np.ndarray:
         """One forward pass -> the CTC head's (T, 36+1) folded posterior."""
         if image.ndim == 2:
@@ -357,6 +362,7 @@ class AnprOcrReader:
         probs = np.asarray(pred_tensor.numpy(), dtype=np.float64)[0]
         return _fold_probs(probs, self._characters)
 
+    #Read a pre-cropped, preprocessed image(_split_row)
     def read(self, image: np.ndarray) -> PlateRead:
         """Read a pre-cropped plate image (grayscale or BGR).
 
@@ -373,21 +379,25 @@ class AnprOcrReader:
                 best = alt
         return best
 
+    #Choosing the final plate as being read
     def decode(self, folded: np.ndarray) -> PlateRead:
         """Turn a folded posterior into a PlateRead.
 
         Split out from read() so the same posterior can be re-decoded (and so
         the decode can be tested without a paddle forward pass).
         """
-        greedy = _greedy(folded)
-        beams = _prefix_beam(folded)
+        
+        greedy = _greedy(folded) #one greedy best choice
+        beams = _prefix_beam(folded) #different alternative choices
         if greedy and greedy not in beams:
             beams.append(greedy)
 
-        candidates: set[str] = set()
+        #Set of all possible values
+        candidates: set[str] = set() 
         for b in beams:
             candidates |= _grammatical_readings(b)
 
+        #scoring each candidate and keepin the best candidate
         best, best_conf, best_confs = "", 0.0, []
         for cand in candidates:
             total, per = _score(folded, cand)
@@ -395,6 +405,7 @@ class AnprOcrReader:
             if conf > best_conf:
                 best, best_conf, best_confs = cand, conf, per
 
+        #Fallback
         grammatical = bool(best)
         if not grammatical:
             # Nothing legal survived. Return the beam's own answer anyway: a
@@ -419,7 +430,7 @@ class AnprOcrReader:
             backend="anpr_ocr", plate_found=True,
             variant="anpr_ocr" if grammatical else "anpr_ocr:ungrammatical")
 
-
+#Safety net
 def load(checkpoint_path: str | None = None) -> AnprOcrReader | None:
     """Construct an AnprOcrReader, or None if unavailable (no paddle, no
     network for the first-run git clone / weight download, etc.).
@@ -451,10 +462,10 @@ def load(checkpoint_path: str | None = None) -> AnprOcrReader | None:
         return None
     try:
         _ensure_paddleocr()
-        import paddle
-        from ppocr.modeling.architectures import build_model as ppocr_build_model
-        from ppocr.postprocess import build_post_process
-        from safetensors.numpy import load_file
+        import paddle # pyright: ignore[reportMissingImports]
+        from ppocr.modeling.architectures import build_model as ppocr_build_model # pyright: ignore[reportMissingImports]
+        from ppocr.postprocess import build_post_process # pyright: ignore[reportMissingImports]
+        from safetensors.numpy import load_file # pyright: ignore[reportMissingImports]
 
         paddle.set_device("cpu")  # no Metal/GPU backend for paddle on macOS
         _, dict_path = _ensure_weights()  # en_dict.txt always comes from the base repo

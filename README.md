@@ -168,11 +168,6 @@ Head to head on identical captures:
 | **of what it stored** | 79% | **92%** |
 | **per read** | 117 ms | **21 ms** |
 
-Two and a half times the accuracy at a quarter of the cost. The widest gaps are
-night IR (+44 points) and monsoon (+43) — captures where the plate is legible but
-the *boundaries between characters* are not, which is exactly the decision the
-classical pipeline has to make first and the CRNN never makes.
-
 `python -m anpr.compare_backends --samples 60 --json models/backend_comparison.json`
 reproduces that table, and the committed JSON is the run it came from. Per-read
 timings move with machine load — the accuracies do not. The classical engine is kept
